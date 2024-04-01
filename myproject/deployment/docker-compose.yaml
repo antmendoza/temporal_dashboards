@@ -1,0 +1,27 @@
+version: "3"
+services:
+  grafana:
+    image: grafana/grafana:10.0.3
+    entrypoint:
+      - /usr/share/grafana/bin/grafana-server
+      - --homepath=/usr/share/grafana
+      - --config=/etc/grafana-config/grafana.ini
+    volumes:
+      - ./grafana/config:/etc/grafana-config
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards-provisioning:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  prometheus:
+      container_name: prometheus
+      image: prom/prometheus:v2.37.0
+      ports:
+        - 9090:9090
+      volumes:
+        - type: bind
+          source: ./prometheus/config.yml
+          target: /etc/prometheus/prometheus.yml

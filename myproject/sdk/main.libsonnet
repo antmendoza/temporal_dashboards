@@ -1,0 +1,26 @@
+local g = import 'g.libsonnet';
+
+local row = g.panel.row;
+
+local panels = import './panels.libsonnet';
+local variables = import './variables.libsonnet';
+local queries = import './queries.libsonnet';
+
+g.dashboard.new('Temporal SDK')
++ g.dashboard.withDescription(|||
+  Temporal SDK
+|||)
++ g.dashboard.graphTooltip.withSharedCrosshair()
++ g.dashboard.time.withFrom("now-1h")
++ g.dashboard.withVariables([
+  variables.datasource,
+  variables.namespace,
+])
++ g.dashboard.withPanels(
+  g.util.grid.makeGrid([
+    row.new('Requests')
+    + row.withPanels([
+      panels.timeSeries.short('Requests Vs Failures', queries.request_vs_failures),
+    ]),
+  ], panelWidth=8)
+)

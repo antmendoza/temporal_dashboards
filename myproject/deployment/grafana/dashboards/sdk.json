@@ -1,0 +1,103 @@
+{
+   "description": "Temporal SDK\n",
+   "graphTooltip": 1,
+   "panels": [
+      {
+         "collapsed": false,
+         "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+         },
+         "id": 1,
+         "panels": [ ],
+         "title": "Requests",
+         "type": "row"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 1
+         },
+         "id": 2,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "sum(rate(temporal_request_total{namespace=~\"$namespace\"}[$__rate_interval])) by (namespace)\n",
+               "intervalFactor": 2,
+               "legendFormat": "request - {{namespace}}\n"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "sum(rate(temporal_request_failure_total{namespace=~\"$namespace\"}[$__rate_interval])) by (namespace)\n",
+               "intervalFactor": 2,
+               "legendFormat": "failure - {{namespace}}\n"
+            }
+         ],
+         "title": "Requests Vs Failures",
+         "type": "timeseries"
+      }
+   ],
+   "schemaVersion": 36,
+   "templating": {
+      "list": [
+         {
+            "name": "datasource",
+            "query": "prometheus",
+            "type": "datasource"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "${datasource}"
+            },
+            "includeAll": true,
+            "multi": true,
+            "name": "namespace",
+            "query": "label_values(namespace)",
+            "refresh": 2,
+            "type": "query"
+         }
+      ]
+   },
+   "time": {
+      "from": "now-1h",
+      "to": "now"
+   },
+   "timezone": "utc",
+   "title": "Temporal SDK"
+}
