@@ -11,7 +11,7 @@ g.dashboard.new('Temporal SDK (Java)')
   Temporal SDK (Java)
 |||)
 + g.dashboard.graphTooltip.withSharedCrosshair()
-+ g.dashboard.time.withFrom("now-1h")
++ g.dashboard.time.withFrom('now-1h')
 + g.dashboard.withVariables([
   variables.datasource,
   variables.namespace,
@@ -24,6 +24,13 @@ g.dashboard.new('Temporal SDK (Java)')
       panels.timeSeries.short('Requests per operation', queries.request_per_operation),
       panels.timeSeries.short('Failures per operation', queries.failures_per_operation),
       panels.timeSeries.seconds('RPC Latencies', queries.rpc_latencies),
-    ])
-  ], panelWidth=8),
+    ]),
+    row.new('Workflow')
+    + row.withPanels([
+      panels.timeSeries.short('Workflow Completion', queries.workflow_completed),
+      panels.timeSeries.seconds('Workflow End-To-End Latencies', queries.workflow_type_latencies),
+      panels.timeSeries.short('Workflow Success By Type', queries.workflow_completed_by_type),
+      panels.timeSeries.short('Workflow Failures By Type', queries.workflow_failed_by_type),
+    ]),
+  ], panelWidth=12),
 )

@@ -59,7 +59,59 @@ local variables = import './variables.libsonnet';
     )
     + prometheusQuery.withIntervalFactor(2)
     + prometheusQuery.withLegendFormat(|||
-        {{ namespace }} - {{ operation }}
+      {{ namespace }} - {{ operation }}
     |||),
   ],
+
+  //workflow queries
+  workflow_completed: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace) (rate(temporal_workflow_completed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+            {{namespace}}
+    |||),
+  ],
+  workflow_completed_by_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace, workflow_type) (rate(temporal_workflow_completed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}} - {{workflow_type}}
+    |||),
+  ],
+  workflow_failed_by_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace, workflow_type) (rate(temporal_workflow_task_execution_failed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}} - {{workflow_type}}
+    |||),
+  ],
+  workflow_type_latencies: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (namespace, workflow_type, le) (rate(temporal_workflow_endtoend_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{ namespace }} - {{ workflow_type }}
+    |||),
+  ],
+
+
 }

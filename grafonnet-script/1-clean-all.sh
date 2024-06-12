@@ -8,5 +8,5 @@ cd ..
 cd ./sdk
 source 4-clean-dashboards.sh
 
-
+cd ..
 
