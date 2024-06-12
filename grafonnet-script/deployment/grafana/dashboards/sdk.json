@@ -1,5 +1,5 @@
 {
-   "description": "Temporal SDK\n",
+   "description": "Temporal SDK (Java)\n",
    "graphTooltip": 1,
    "panels": [
       {
@@ -70,6 +70,147 @@
          ],
          "title": "Requests Vs Failures",
          "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 1
+         },
+         "id": 3,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "sum(rate(temporal_request_total{namespace=~\"$namespace\"}[$__rate_interval])) by (operation)\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{operation}}\n"
+            }
+         ],
+         "title": "Requests per operation",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 1
+         },
+         "id": 4,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "sum(rate(temporal_request_failure_total{namespace=~\"$namespace\"}[$__rate_interval])) by (operation)\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{operation}}\n"
+            }
+         ],
+         "title": "Failures per operation",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "s"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 9
+         },
+         "id": 5,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "histogram_quantile(0.95, sum by (namespace, operation, le) (rate(temporal_request_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{ namespace }} - {{ operation }}\n"
+            }
+         ],
+         "title": "RPC Latencies",
+         "type": "timeseries"
       }
    ],
    "schemaVersion": 36,
@@ -99,5 +240,5 @@
       "to": "now"
    },
    "timezone": "utc",
-   "title": "Temporal SDK"
+   "title": "Temporal SDK (Java)"
 }

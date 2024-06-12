@@ -6,9 +6,9 @@ local panels = import './panels.libsonnet';
 local variables = import './variables.libsonnet';
 local queries = import './queries.libsonnet';
 
-g.dashboard.new('Temporal SDK')
+g.dashboard.new('Temporal SDK (Java)')
 + g.dashboard.withDescription(|||
-  Temporal SDK
+  Temporal SDK (Java)
 |||)
 + g.dashboard.graphTooltip.withSharedCrosshair()
 + g.dashboard.time.withFrom("now-1h")
@@ -21,6 +21,9 @@ g.dashboard.new('Temporal SDK')
     row.new('Requests')
     + row.withPanels([
       panels.timeSeries.short('Requests Vs Failures', queries.request_vs_failures),
-    ]),
-  ], panelWidth=8)
+      panels.timeSeries.short('Requests per operation', queries.request_per_operation),
+      panels.timeSeries.short('Failures per operation', queries.failures_per_operation),
+      panels.timeSeries.seconds('RPC Latencies', queries.rpc_latencies),
+    ])
+  ], panelWidth=8),
 )

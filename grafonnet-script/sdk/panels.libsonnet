@@ -23,6 +23,10 @@ local g = import 'g.libsonnet';
       + timeSeries.standardOptions.withUnit('short')
       + timeSeries.standardOptions.withDecimals(0),
 
+    seconds(title, targets):
+      self.base(title, targets)
+      + timeSeries.standardOptions.withUnit('s')
+      + timeSeries.standardOptions.withDecimals(0)
   },
 
 }

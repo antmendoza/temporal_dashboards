@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source 1-clean-all.sh
+
 cd ./sdk
 #source 0-install-dependencies.sh
 source 1-generate-dashboards.sh
