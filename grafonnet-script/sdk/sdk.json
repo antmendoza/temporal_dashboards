@@ -204,7 +204,7 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (namespace, operation, le) (rate(temporal_request_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (namespace, operation, le) (rate(temporal_request_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{ namespace }} - {{ operation }}\n"
             }
@@ -311,7 +311,7 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (namespace, workflow_type, le) (rate(temporal_workflow_endtoend_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (namespace, workflow_type, le) (rate(temporal_workflow_endtoend_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{ namespace }} - {{ workflow_type }}\n"
             }
@@ -559,12 +559,12 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{namespace}}\n"
             }
          ],
-         "title": "Workflow Task Backlog By Namespace",
+         "title": "Workflow Task Schedule To Start By Namespace",
          "type": "timeseries"
       },
       {
@@ -606,12 +606,12 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{workflow_type}}\n"
             }
          ],
-         "title": "Workflow Task Backlog By Workflow Type",
+         "title": "Workflow Task Schedule To Start By Workflow Type",
          "type": "timeseries"
       },
       {
@@ -747,7 +747,7 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_execution_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_execution_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{namespace}}\n"
             }
@@ -794,7 +794,7 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_execution_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_execution_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{workflow_type}}\n"
             }
@@ -841,7 +841,7 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_replay_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_replay_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{namespace}}\n"
             }
@@ -888,7 +888,7 @@
                   "type": "prometheus",
                   "uid": "$datasource"
                },
-               "expr": "histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_replay_latency_seconds_bucket{namespace=~\"$namespace\"}[5$__rate_interval])))\n",
+               "expr": "histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_replay_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
                "intervalFactor": 2,
                "legendFormat": "{{workflow_type}}\n"
             }

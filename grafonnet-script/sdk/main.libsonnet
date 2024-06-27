@@ -36,11 +36,22 @@ g.dashboard.new('Temporal SDK (Java)')
     + row.withPanels([
       panels.timeSeries.short('Workflow Task Throughput By Namespace', queries.workflow_task_by_namespace),
       panels.timeSeries.short('Workflow Task Throughput By Workflow Type', queries.workflow_task_by_workflow_type),
-      panels.timeSeries.seconds('Workflow Task Backlog By Namespace', queries.workflow_task_backlog_namespace),
-      panels.timeSeries.seconds('Workflow Task Backlog By Workflow Type', queries.workflow_task_backlog_workflow_type),
+      panels.timeSeries.seconds('Workflow Task Schedule To Start By Namespace', queries.workflow_task_schedule_to_start_namespace),
+      panels.timeSeries.seconds('Workflow Task Schedule To Start By Workflow Type', queries.workflow_task_schedule_to_start_workflow_type),
       panels.timeSeries.short('Workflow Task Failed By Namespace', queries.workflow_task_failed_namespace),
       panels.timeSeries.short('Workflow Task Failed By Workflow Type', queries.workflow_task_failed_workflow_type),
-      panels.timeSeries.seconds('Empty Polls', queries.empty_polls),
+      panels.timeSeries.seconds('Workflow Task Execution Latency By Namespace', queries.workflow_task_execution_latency_namespace),
+      panels.timeSeries.seconds('Workflow Task Execution Latency By Workflow Type', queries.workflow_task_execution_latency_workflow_type),
+      panels.timeSeries.seconds('Workflow Task Replay Latency By Namespace', queries.workflow_task_replay_latency_namespace),
+      panels.timeSeries.seconds('Workflow Task Replay Latency By Workflow Type', queries.workflow_task_replay_latency_workflow_type),
+      panels.timeSeries.short('Empty Polls', queries.empty_polls),
+    ]),
+    row.new('Activities')
+    + row.withPanels([
+      panels.timeSeries.short('Activity Throughput', queries.activity_throughput),
+      panels.timeSeries.short('Failed Activity', queries.activity_failed),
+      panels.timeSeries.short('Activity Execution Latencies', queries.activity_executin_latency),
+      panels.timeSeries.short('Activity Schedule To Start', queries.activity_schedule_to_start_latency),
     ]),
   ], panelWidth=12),
 )

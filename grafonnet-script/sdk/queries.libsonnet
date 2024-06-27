@@ -54,7 +54,7 @@ local variables = import './variables.libsonnet';
     prometheusQuery.new(
       '$' + variables.datasource.name,
       |||
-        histogram_quantile(0.95, sum by (namespace, operation, le) (rate(temporal_request_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+        histogram_quantile(0.95, sum by (namespace, operation, le) (rate(temporal_request_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
       |||
     )
     + prometheusQuery.withIntervalFactor(2)
@@ -104,7 +104,7 @@ local variables = import './variables.libsonnet';
     prometheusQuery.new(
       '$' + variables.datasource.name,
       |||
-        histogram_quantile(0.95, sum by (namespace, workflow_type, le) (rate(temporal_workflow_endtoend_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+        histogram_quantile(0.95, sum by (namespace, workflow_type, le) (rate(temporal_workflow_endtoend_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
       |||
     )
     + prometheusQuery.withIntervalFactor(2)
@@ -142,11 +142,11 @@ local variables = import './variables.libsonnet';
   ],
 
 
-  workflow_task_backlog_workflow_type: [
+  workflow_task_schedule_to_start_workflow_type: [
     prometheusQuery.new(
       '$' + variables.datasource.name,
       |||
-        histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+        histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
       |||
     )
     + prometheusQuery.withIntervalFactor(2)
@@ -156,11 +156,11 @@ local variables = import './variables.libsonnet';
   ],
 
 
-  workflow_task_backlog_namespace: [
+  workflow_task_schedule_to_start_namespace: [
     prometheusQuery.new(
       '$' + variables.datasource.name,
       |||
-        histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+        histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
       |||
     )
     + prometheusQuery.withIntervalFactor(2)
@@ -170,7 +170,7 @@ local variables = import './variables.libsonnet';
   ],
 
 
-  ////
+
 
 
   workflow_task_failed_workflow_type: [
@@ -200,8 +200,60 @@ local variables = import './variables.libsonnet';
   ],
 
 
-  ////
 
+  workflow_task_execution_latency_workflow_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_execution_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{workflow_type}}
+    |||),
+  ],
+
+  workflow_task_execution_latency_namespace: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_execution_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}}
+    |||),
+  ],
+
+
+
+  workflow_task_replay_latency_workflow_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_replay_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{workflow_type}}
+    |||),
+  ],
+
+  workflow_task_replay_latency_namespace: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_replay_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}}
+    |||),
+  ],
 
   empty_polls: [
     prometheusQuery.new(
@@ -215,6 +267,67 @@ local variables = import './variables.libsonnet';
       Empty Polls - {{namespace}}
     |||),
   ],
+
+//activities
+
+  activity_throughput: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace, activity_type) (rate(temporal_activity_execution_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}} - {{activity_type}}
+    |||),
+  ],
+
+
+
+
+  activity_failed: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace, activity_type) (rate(temporal_activity_execution_failed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}} - {{activity_type}}
+    |||),
+  ],
+
+
+  activity_executin_latency: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (namespace, activity_type  le) (rate(temporal_activity_execution_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}} - {{activity_type}}
+    |||),
+  ],
+
+
+  activity_schedule_to_start_latency: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (namespace, activity_type  le) (rate(temporal_activity_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}} - {{activity_type}}
+    |||),
+  ],
+
+
 
 
 }
