@@ -73,7 +73,7 @@ local variables = import './variables.libsonnet';
     )
     + prometheusQuery.withIntervalFactor(2)
     + prometheusQuery.withLegendFormat(|||
-            {{namespace}}
+      {{namespace}}
     |||),
   ],
   workflow_completed_by_type: [
@@ -110,6 +110,109 @@ local variables = import './variables.libsonnet';
     + prometheusQuery.withIntervalFactor(2)
     + prometheusQuery.withLegendFormat(|||
       {{ namespace }} - {{ workflow_type }}
+    |||),
+  ],
+
+
+  //workflow task
+  workflow_task_by_workflow_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (workflow_type) (rate(temporal_workflow_task_queue_poll_succeed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{workflow_type}}
+    |||),
+  ],
+
+  workflow_task_by_namespace: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace) (rate(temporal_workflow_task_queue_poll_succeed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}}
+    |||),
+  ],
+
+
+  workflow_task_backlog_workflow_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (workflow_type,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{workflow_type}}
+    |||),
+  ],
+
+
+  workflow_task_backlog_namespace: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        histogram_quantile(0.95, sum by (namespace,  le) (rate(temporal_workflow_task_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[5$__rate_interval])))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}}
+    |||),
+  ],
+
+
+  ////
+
+
+  workflow_task_failed_workflow_type: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (workflow_type) (rate(temporal_workflow_task_execution_failed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{workflow_type}}
+    |||),
+  ],
+
+  workflow_task_failed_namespace: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace) (rate(temporal_workflow_task_execution_failed_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      {{namespace}}
+    |||),
+  ],
+
+
+  ////
+
+
+  empty_polls: [
+    prometheusQuery.new(
+      '$' + variables.datasource.name,
+      |||
+        sum by (namespace) (rate(temporal_workflow_task_queue_poll_empty_total{namespace=~"$namespace"}[$__rate_interval]))
+      |||
+    )
+    + prometheusQuery.withIntervalFactor(2)
+    + prometheusQuery.withLegendFormat(|||
+      Empty Polls - {{namespace}}
     |||),
   ],
 

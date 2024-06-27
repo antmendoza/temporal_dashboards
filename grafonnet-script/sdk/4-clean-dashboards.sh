@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm ../../sdk/sdk.json
+rm sdk.json
 

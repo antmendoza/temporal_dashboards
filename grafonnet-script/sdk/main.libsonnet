@@ -32,5 +32,15 @@ g.dashboard.new('Temporal SDK (Java)')
       panels.timeSeries.short('Workflow Success By Type', queries.workflow_completed_by_type),
       panels.timeSeries.short('Workflow Failures By Type', queries.workflow_failed_by_type),
     ]),
+    row.new('Workflow Task Processing')
+    + row.withPanels([
+      panels.timeSeries.short('Workflow Task Throughput By Namespace', queries.workflow_task_by_namespace),
+      panels.timeSeries.short('Workflow Task Throughput By Workflow Type', queries.workflow_task_by_workflow_type),
+      panels.timeSeries.seconds('Workflow Task Backlog By Namespace', queries.workflow_task_backlog_namespace),
+      panels.timeSeries.seconds('Workflow Task Backlog By Workflow Type', queries.workflow_task_backlog_workflow_type),
+      panels.timeSeries.short('Workflow Task Failed By Namespace', queries.workflow_task_failed_namespace),
+      panels.timeSeries.short('Workflow Task Failed By Workflow Type', queries.workflow_task_failed_workflow_type),
+      panels.timeSeries.seconds('Empty Polls', queries.empty_polls),
+    ]),
   ], panelWidth=12),
 )
