@@ -51,7 +51,7 @@ g.dashboard.new('Temporal SDK (Java)')
       panels.timeSeries.short('Activity Throughput', queries.activity_throughput),
       panels.timeSeries.short('Failed Activity', queries.activity_failed),
       panels.timeSeries.short('Activity Execution Latencies', queries.activity_executin_latency),
-      panels.timeSeries.short('Activity Schedule To Start', queries.activity_schedule_to_start_latency),
+      panels.timeSeries.seconds('Activity Schedule To Start', queries.activity_schedule_to_start_latency),
     ]),
   ], panelWidth=12),
 )

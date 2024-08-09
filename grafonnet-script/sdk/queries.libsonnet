@@ -304,7 +304,7 @@ local variables = import './variables.libsonnet';
     prometheusQuery.new(
       '$' + variables.datasource.name,
       |||
-        histogram_quantile(0.95, sum by (namespace, activity_type  le) (rate(temporal_activity_execution_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+        histogram_quantile(0.95, sum by (namespace, activity_type , le) (rate(temporal_activity_execution_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
       |||
     )
     + prometheusQuery.withIntervalFactor(2)
@@ -318,7 +318,7 @@ local variables = import './variables.libsonnet';
     prometheusQuery.new(
       '$' + variables.datasource.name,
       |||
-        histogram_quantile(0.95, sum by (namespace, activity_type  le) (rate(temporal_activity_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
+        histogram_quantile(0.95, sum by (namespace, activity_type , le) (rate(temporal_activity_schedule_to_start_latency_seconds_bucket{namespace=~"$namespace"}[$__rate_interval])))
       |||
     )
     + prometheusQuery.withIntervalFactor(2)

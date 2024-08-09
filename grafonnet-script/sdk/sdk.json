@@ -942,6 +942,207 @@
          ],
          "title": "Empty Polls",
          "type": "timeseries"
+      },
+      {
+         "collapsed": false,
+         "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 83
+         },
+         "id": 23,
+         "panels": [ ],
+         "title": "Activities",
+         "type": "row"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 84
+         },
+         "id": 24,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "sum by (namespace, activity_type) (rate(temporal_activity_execution_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval]))\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{namespace}} - {{activity_type}}\n"
+            }
+         ],
+         "title": "Activity Throughput",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 84
+         },
+         "id": 25,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "sum by (namespace, activity_type) (rate(temporal_activity_execution_failed_total{namespace=~\"$namespace\"}[$__rate_interval]))\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{namespace}} - {{activity_type}}\n"
+            }
+         ],
+         "title": "Failed Activity",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 92
+         },
+         "id": 26,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "histogram_quantile(0.95, sum by (namespace, activity_type , le) (rate(temporal_activity_execution_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{namespace}} - {{activity_type}}\n"
+            }
+         ],
+         "title": "Activity Execution Latencies",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "custom": {
+                  "fillOpacity": 10,
+                  "showPoints": "never"
+               },
+               "decimals": 0,
+               "unit": "s"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 92
+         },
+         "id": 27,
+         "interval": "5s",
+         "options": {
+            "legend": {
+               "calcs": [
+                  "lastNotNull",
+                  "max"
+               ],
+               "displayMode": "table"
+            }
+         },
+         "pluginVersion": "v10.4.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "histogram_quantile(0.95, sum by (namespace, activity_type , le) (rate(temporal_activity_schedule_to_start_latency_seconds_bucket{namespace=~\"$namespace\"}[$__rate_interval])))\n",
+               "intervalFactor": 2,
+               "legendFormat": "{{namespace}} - {{activity_type}}\n"
+            }
+         ],
+         "title": "Activity Schedule To Start",
+         "type": "timeseries"
       }
    ],
    "schemaVersion": 36,
